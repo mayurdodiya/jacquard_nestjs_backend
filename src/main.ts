@@ -17,3 +17,8 @@ async function bootstrap() {
   );
 }
 bootstrap();
+
+
+// "scripts": {
+//   "start:nodemon": "nodemon --watch src --ext ts --exec \"npx ts-node src/main.ts\""
+// }
