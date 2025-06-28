@@ -1,0 +1,74 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependency directories
+dist/
+.cache/
+.next/
+out/
+
+# Build directories
+build/
+tmp/
+temp/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# VSCode settings
+.vscode/
+
+# Mac system files
+.DS_Store
+
+# Linux / mac temp files
+*.swp
+*.swo
+
+# Coverage reports
+coverage/
+
+# Optional npm cache directory
+.npm/
+
+# Debug log from node
+debug.log
+
+# Jest testing
+jest-cache/
+jest-output/
+coverage/
+
+# IDE specific
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Docker
+docker-compose.override.yml
+
+# PM2 logs
+pids
+*.pid
+*.seed
+
+# Logs for MongoDB or SQL
+*.log
+
+# dotenv backup
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
