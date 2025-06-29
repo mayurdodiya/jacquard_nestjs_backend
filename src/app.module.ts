@@ -40,12 +40,14 @@
 // export class AppModule {}
 
 
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AdminModule } from './modules/admin/admin.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthMiddleware } from './middlewares/auth.middleware';
+import { User, UserSchema } from './schemas/user.schema';
 
 
 @Module({
@@ -60,13 +62,26 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
     }),
 
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+    ]),
+
     AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor() {
-    console.log('App Module Loaded');
+export class AppModule implements NestModule {
+  // constructor() {
+  //   console.log('App Module Loaded');
+  // }
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude( // ✅ Exclude public routes
+        '/admin/auth/login',
+        // '/admin/company',
+      )
+      .forRoutes('*'); // ✅ Apply globally, or you can target specific routes
   }
 }

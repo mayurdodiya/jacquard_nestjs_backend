@@ -1,18 +1,19 @@
 import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 
-export class AddCompanyDto {
+export class UpdateCompanyDto {
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   name: string;
 
   @Transform(({ value }) => value?.trim())
-  @IsNotEmpty({message: 'Phone number is required' })
+  @IsOptional()
   @IsString()
   phone_no: string;
   
   @Transform(({ value }) => value?.trim())
-  @IsNotEmpty({message: 'Email is required' })
+  @IsOptional()
   @IsEmail({}, {message: 'Invalid email address' })
   @IsString()
   email: string;
