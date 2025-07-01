@@ -48,4 +48,18 @@ export class AdminService {
       return error
     }
   }
+
+  async updateProfile(req: any, data: any) {
+    try {
+      const obj = {
+        phone_no: data.phone_no,
+        name: data.name,
+        image_url: data.image_url
+      }
+      await this.userModel.findOneAndUpdate({ _id: req.user._id }, { $set: obj }, { new: true })
+      return { success: true, status: 200, message: 'Profile update successfully!', }
+    } catch (error) {
+      return error
+    }
+  }
 }

@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import mongoose from 'mongoose';
 import { connectToDatabase } from './config/database';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const logger = new Logger('MongoDB');
 
   app.useGlobalPipes(
@@ -16,8 +19,12 @@ async function bootstrap() {
     }),
   );
 
-    // Connect to MongoDB
-    await connectToDatabase();
+  // Connect to MongoDB
+  await connectToDatabase();
+
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
+  });
 
   await app.listen(process.env.PORT || 3000);
   logger.log(
