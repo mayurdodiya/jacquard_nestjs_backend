@@ -6,12 +6,12 @@ export class UpdateProfileDto {
   @IsString()
   name: string;
 
-  @Transform(({ value }) => value?.trim())
-  @IsOptional({message: 'Phone number is required' })
-  @IsString()
-  phone_no: string;
+  // @Transform(({ value }) => value?.trim())
+  // @IsOptional({message: 'Phone number is required' })
+  // @IsString()
+  // phone_no: string;
 
   @IsOptional()
   @IsUrl()
-  image_url?: string;
+  logo_url?: string;
 }

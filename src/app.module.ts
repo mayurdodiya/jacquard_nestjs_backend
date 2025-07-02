@@ -48,6 +48,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { User, UserSchema } from './schemas/user.schema';
+import { Company, CompanySchema } from './schemas/company.schema';
+import { CompanyModule } from './modules/company/company.module';
 
 
 @Module({
@@ -64,9 +66,11 @@ import { User, UserSchema } from './schemas/user.schema';
 
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
+      { name: Company.name, schema: CompanySchema },
     ]),
 
     AdminModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -80,7 +84,7 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude( // ✅ Exclude public routes
         '/admin/auth/login',
-        // '/admin/company',
+        '/company/auth/login',
       )
       .forRoutes('*'); // ✅ Apply globally, or you can target specific routes
   }

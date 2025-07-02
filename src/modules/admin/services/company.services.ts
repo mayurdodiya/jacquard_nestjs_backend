@@ -19,7 +19,24 @@ export class AdminCompanyService {
   ) { }
 
   async getCompany() {
-    return 'Hello Company!';
+    try {
+      const company = await this.companyModel.find({ deleted_at: null })
+      return { success: true, status: 200, message: 'Company data get successfully!', data: company }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getCompanyById(id: string) {
+    try {
+      const company = await this.companyModel.findOne({ _id: id, deleted_at: null })
+      if (!company) {
+        return { success: false, status: 400, message: 'Company not found!' }
+      }
+      return { success: true, status: 200, message: 'Company data get successfully!', data: company }
+    } catch (error) {
+      throw error
+    }
   }
 
   async addCompany(data: any) {
@@ -53,11 +70,23 @@ export class AdminCompanyService {
 
   async updateCompany(id: string, data: any) {
     try {
-      const company = await this.companyModel.findOneAndUpdate({ _id: id, deleted_at: null }, {$set:{...data}}, { new: true })
+      const company = await this.companyModel.findOneAndUpdate({ _id: id, deleted_at: null }, { $set: { ...data } }, { new: true })
       if (!company) {
         return { success: false, status: 400, message: 'Company not found!' }
       }
       return { success: true, status: 200, message: 'Company updated successfully!', data: company }
+    } catch (error) {
+      return error
+    }
+  }
+
+  async deleteCompany(id: string) {
+    try {
+      const company = await this.companyModel.findOneAndUpdate({ _id: id, deleted_at: null }, { $set: { deleted_at: new Date() } })
+      if (!company) {
+        return { success: false, status: 400, message: 'Company not found!' }
+      }
+      return { success: true, status: 200, message: 'Company deleted successfully!' }
     } catch (error) {
       return error
     }

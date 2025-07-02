@@ -15,6 +15,9 @@ export class Company {
     email: string;
 
     @Prop()
+    password: string;
+
+    @Prop()
     status: string;
 
     @Prop({ default: true })

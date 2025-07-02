@@ -49,6 +49,19 @@ export class AdminService {
     }
   }
 
+  async viewProfile(req: any) {
+    try {
+      const profile = await this.userModel.findById(req.user._id).lean()
+      if (!profile) {
+        return { success: false, status: 404, message: 'Profile not found!' };
+      }
+      const {password, ...profileWithoutPassword} = profile;
+      return { success: true, status: 200, message: 'Profile get successfully!', data: profileWithoutPassword }
+    } catch (error) {
+      return error
+    }
+  }
+
   async updateProfile(req: any, data: any) {
     try {
       const obj = {

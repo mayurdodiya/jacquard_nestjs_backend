@@ -25,6 +25,12 @@ export class AdminController {
     return result;
   }
 
+  @Get('viewProfile')
+  async viewProfile(@Request() req: any) {
+    const result = await this.adminService.viewProfile(req);
+    return result;
+  }
+
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {

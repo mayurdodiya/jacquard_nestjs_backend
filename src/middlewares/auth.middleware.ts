@@ -4,11 +4,13 @@ import { CommonUtils } from '../utils/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { Model } from 'mongoose';
+import { Company, CompanyDocument } from '../schemas/company.schema';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
     constructor(
         @InjectModel(User.name) private userModel: Model<UserDocument>,
+        @InjectModel(Company.name) private companyModel: Model<CompanyDocument>
     ) { }
 
     async use(req: Request, res: Response, next: NextFunction) {
@@ -24,11 +26,19 @@ export class AuthMiddleware implements NestMiddleware {
                 throw new UnauthorizedException('Token missing');
             }
 
+            let user = null
             const decoded: any = CommonUtils.verifyToken(token);
 
-            const user = await this.userModel.findOne({ _id: decoded.userId, deleted_at: null });
-            if (!user) {
-                throw new UnauthorizedException('User not found or deleted');
+            if (decoded?.userId) {
+                user = await this.userModel.findOne({ _id: decoded.userId, deleted_at: null });
+                if (!user) {
+                    throw new UnauthorizedException('User not found or deleted');
+                }
+            } else if (decoded?.companyId) {
+                user = await this.companyModel.findOne({ _id: decoded.companyId, deleted_at: null });
+                if (!user) {
+                    throw new UnauthorizedException('Company not found or deleted');
+                }
             }
 
             // Attach user to request object
