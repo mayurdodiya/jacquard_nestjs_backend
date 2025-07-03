@@ -1,98 +1,96 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Steps:- 
+    1.Create Lemon Squeezy Account
+    2.Create Store
+    3.Create Product & Variant
+    4.What is a Variant?
+    5.One-Time Payment Flow
+    6.Generate Payment Link
+    7.Webhook Setup
+    8.Database IDs to Store
+    9,Important Webhook Events
+    10.Control Price from Backend
+    11.Conclusion
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+1️⃣ Create Lemon Squeezy Account
+    Go to 👉 https://www.lemonsqueezy.com/
+    Sign up with your email.
+    Verify your email address.
 
-## Description
+2️⃣ Create Store
+    After login, click "Create Store".
+    This store acts as your business profile.
+    Store ID is find as:
+        go in ==> dashboard/setting/Stores/find your created store and Id / #194730
+        ![image](https://github.com/user-attachments/assets/4eb5c4b3-1419-48c9-95ff-48428cfd0854)
+        👉 Store ID = 194730
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+3️⃣ Create Product & Variant
+    ➕ Create a Product
+    Navigate to Products → "New Product".
+    Select:
+    Product Type: Digital Download, Service, Subscription, or License.
+    For one-time payment: choose "Digital Product" or "Service".
+    ➕ Create a Variant (Mandatory)
+    A Variant represents a pricing option (e.g., Basic, Pro, Enterprise).
+    Even for one-time payments, a variant is mandatory.
 
-## Project setup
+4️⃣ What is a Variant?
+    In Lemon Squeezy:
+    Product = What you're selling (e.g., E-book, Service, Software).
+    Variant = Specific pricing option for the product.
+    ✔️ Even one-time payments require a variant.
+    This is where the default price is defined (but you can override it from your backend using custom_price).
+    for find verient id ==> dashboard/store/products/click on already created product /add varient in side product / select varient/ show varient id in url/ like ==> https://app.lemonsqueezy.com/products/560551/variants/871501
+![image](https://github.com/user-attachments/assets/6fe77889-5454-4dc7-b1d4-e2ba7436c5de)
 
-```bash
-$ npm install
-```
 
-## Compile and run the project
+5️⃣ One-Time Payment Flow
+    ✔️ How to choose one-time payment:
+    When creating a product, select "Digital Product" or "Service".
+    Do NOT select Subscription.
+    👉 If your product has no subscription period, it is automatically a one-time payment.
 
-```bash
-# development
-$ npm run start
+6️⃣ Generate Payment Link
+    ➕ Steps:
+    Get:
+    API Key:
+        From Account Settings → API → Create API key.
+        Store ID (from URL)
+        Variant ID (from the product variant page URL) it's use for set one-time, subscription payment flow
+    note:- in this code you can check for demo of one time payment flow ==> paymentHistory.controller.js file
+    
+    webhook response ==> webhook.json(one time payment flow)
+    onetime payment link curl ==> oneTimePaymentLinkCurl.text file
+    one time payment link response ==> oneTimeLinkResponse.text file
 
-# watch mode
-$ npm run start:dev
+7️⃣ Webhook Setup
+    Go to Settings → Webhooks → Add Webhook.
+    Set:
+    Webhook URL:
+    e.g., https://yourdomain.com/api/webhook
+    Select events to listen to.
 
-# production mode
-$ npm run start:prod
-```
+8️⃣ Database IDs to Store
+    we need to store some id in our database, from webhook payload
+        "store_id": 194730,
+        "customer_id": 6134334,
+        "identifier": "9a86792c-78c5-4b5c-8d23-3fd8b5868a46",
+        "order_number": 1947305,
 
-## Run tests
+9️⃣ Important Webhook Events
+    order_created	==> 🔥 Order initiated (use for success)
+    order_paid	    ==> ✅ Payment completed
+    order_refunded	==> ♻️ Refund issued
+    order_expired	==> 🚫 Payment link expired
 
-```bash
-# unit tests
-$ npm run test
+1️⃣0️⃣ Control Payment Price from Backend
+    LemonSqueezy supports setting price from backend using:
+    set in payload of generate payment link ==> "custom_price": <price_in_cents>
+    This price will override the variant price
+    ✔️ Customers cannot change this price. It’s fully server-side controlled.
 
-# e2e tests
-$ npm run test:e2e
+1️⃣1️⃣official docs 👉 https://docs.lemonsqueezy.com
 
-# test coverage
-$ npm run test:cov
-```
 
-## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

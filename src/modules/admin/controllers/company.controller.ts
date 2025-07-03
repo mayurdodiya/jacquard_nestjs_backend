@@ -13,7 +13,7 @@ export class AdminCompanyController {
   }
 
   @Get(':id')
-  getCompanyById(@Param('id') id:string) {
+  getCompanyById(@Param('id') id: string) {
     return this.companyService.getCompanyById(id);
   }
 
@@ -31,5 +31,4 @@ export class AdminCompanyController {
   async deleteCompany(@Param('id') id: string) {
     return this.companyService.deleteCompany(id);
   }
-
 }

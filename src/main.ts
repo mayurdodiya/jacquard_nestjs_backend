@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import { connectToDatabase } from './config/database';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
@@ -37,3 +39,7 @@ bootstrap();
 // "scripts": {
 //   "start:nodemon": "nodemon --watch src --ext ts --exec \"npx ts-node src/main.ts\""
 // }
+
+
+// payment integration
+// google auth

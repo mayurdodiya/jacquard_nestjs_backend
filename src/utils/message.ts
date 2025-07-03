@@ -11,7 +11,7 @@ export const RESPONSE_MESSAGES = {
     // Other Examples
     CREATED: (entity = 'Resource') => `${entity} created successfully`,
     UPDATED: (entity = 'Resource') => `${entity} updated successfully`,
-    DELETED: (entity = 'Resource') => `${entity} deleted successfully`,
+    DELETED: (entity = 'Resource') => `${entity} data deleted successfully`,
     NOT_FOUND: (entity = 'Resource') => `${entity} not found`,
 
     // ✅ Authentication
@@ -22,7 +22,7 @@ export const RESPONSE_MESSAGES = {
 
     // ✅ Entity Not Found
     PROFILE_FETCHED: (entity = 'Profile') => `${entity} fetched successfully`,
-    PROFILE_UPDATED: (entity = 'Profile') => `${entity} updated successfully`,
+    PROFILE_UPDATED: (entity = 'Profile') => `${entity} data updated successfully`,
 
     // ✅ Errors
     SOMETHING_WENT_WRONG: () => 'Something went wrong',
